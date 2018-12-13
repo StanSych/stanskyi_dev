@@ -31,62 +31,47 @@
       </div>
     </header>
 
-    <div class="main row">
-      <div class="medium-12 columns">
-        <h1 id="main_h">Menu Specials</h1>
-        <div class="row">
-          <?php
-          include_once('connect.php');
+    <!-- PHP -->
+    <?php 
+      include_once('connect.php');
 
-          if (isset($_POST['name'])) {
-          	$name = $_POST['name'];
+      if( isset($_GET['edit']) ){
+        $id = $_GET['edit'];
+        global $mysqli;
+        $result = $mysqli->query("
+            SELECT 
+            PizzaName, 
+            PizzaToppingOne, 
+            PizzaToppingTwo, 
+            PizzaToppingThree,
+            PizzaPrice 
+            FROM PIZZA
+            WHERE id='$id'
+        ");
 
-          	if (mysql_query("INSERT INTO PIZZA VALUES('','$name')")) {
-          		echo "Successful Integration";
-          	} else{
-          		echo "Failed Integration";
-          	}
-          }
+        $row = mysqli_fetch_array($result);
+      } 
 
-          global $mysqli;
-          $result = $mysqli->query("
-          	SELECT 
-          	PizzaName, 
-          	PizzaToppingOne, 
-          	PizzaToppingTwo, 
-          	PizzaToppingThree,
-          	PizzaPrice 
-          	FROM PIZZA
-          ");
+      if(isset($_POST['name'])){
+        $newName = $_POST['name'];
+        $id = $_POST['id'];
+        $sql = "UPDATE PIZZA SET name='$newName' WHERE id='$id'";
+        global $mysqli;
+        $result = $mysqli->query($sql) or die("Couldn't update the value". mysql_error());
+        echo "<meta http-equiv='refresh' content='0;url=specials.php'>";
+      }
 
-          $output = "";
+    ?>
 
-          // 'edit.php?edit='$row[PizzaName]'
-          
-          while($row = mysqli_fetch_array($result)){
-            $output .= '
-            	<div class="medium-6 callout">
-            		<h4 class="subheader">'.$row['PizzaName'].' 
-            			<a href="
-            				edit.php?edit='.$row['PizzaName'].'
-            			">Edit</a>
-            		</h4>
-            		<p>'.$row['PizzaToppingOne'].'</p>
-            		<p>'.$row['PizzaToppingTwo'].'</p>
-            		<p>'.$row['PizzaToppingThree'].'</p>
-            		<p class="h5 strong" style="text-align: right;"><strong>'. $row['PizzaPrice'] .'</strong></p>
-            	</div>
-            ';
-          }
-
-          echo $output;
-
-
-          // close database connection
-		  $mysqli->close();
-
-          ?>
-        </div>
+    <!-- EDIT VALUES FORM -->
+    <div class="container">
+      <div class="row">
+        <form action="edit.php" method="POST">
+          Edit Pizza Type: 
+          <input type="text" name="name" value="<?php $row[1] ?>"><br>
+          <input type="hidden" name="id" value="<?php echo $row[0] ?>">
+          <input type="submit" name="Enter">
+        </form>
       </div>
     </div>
 
@@ -125,9 +110,9 @@
 
     <!-- Scripts -->
     <script>
-	    $( function(tooltip) {
-	      $( document ).tooltip();
-	    } );
+      $( function(tooltip) {
+        $( document ).tooltip();
+      } );
     </script>
 
     <script src="js/vendor/jquery.js"></script>
