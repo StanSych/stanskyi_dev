@@ -15,4 +15,17 @@ INSERT INTO PIZZA (PizzaName, PizzaToppingOne, PizzaToppingTwo, PizzaToppingThre
 
 INSERT INTO PIZZA (PizzaName, PizzaToppingOne, PizzaToppingTwo, PizzaToppingThree, PizzaPrice) VALUES ('Medium','Chicken','Mozzarella','Tomatoes', 29.99);
 
-SELECT * FROM PIZZA;
+SELECT PizzaName FROM PIZZA;
+
+SELECT 
+            PizzaName, 
+            PizzaToppingOne, 
+            PizzaToppingTwo, 
+            PizzaToppingThree,
+            PizzaPrice 
+            FROM Twicedeal.PIZZA
+            WHERE PizzaID=1
+            
+            UPDATE PIZZA SET PizzaName='Srsfsd' WHERE PizzaID='1'
+            
+            DELETE FROM pizza WHERE PizzaID = '1'

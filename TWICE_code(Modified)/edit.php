@@ -45,32 +45,34 @@
             PizzaToppingTwo, 
             PizzaToppingThree,
             PizzaPrice 
-            FROM PIZZA
-            WHERE id='$id'
+            FROM Twicedeal.PIZZA
+            WHERE PizzaID='$id'
         ");
-
-        $row = mysqli_fetch_array($result);
+        while($row = $result->fetch_assoc()){
+          $name = $row['PizzaName'];
+          $price = $row['PizzaPrice'];
+          $toppingOne = $row['PizzaToppingOne'];
+          $toppingTwo = $row['PizzaToppingTwo'];
+          $toppingThree = $row['PizzaToppingThree'];
+        }
       } 
 
-      if(isset($_POST['name'])){
-        $newName = $_POST['name'];
-        $id = $_POST['id'];
-        $sql = "UPDATE PIZZA SET name='$newName' WHERE id='$id'";
-        global $mysqli;
-        $result = $mysqli->query($sql) or die("Couldn't update the value". mysql_error());
-        echo "<meta http-equiv='refresh' content='0;url=specials.php'>";
-      }
+      
 
     ?>
 
     <!-- EDIT VALUES FORM -->
     <div class="container">
       <div class="row">
-        <form action="edit.php" method="POST">
+        <form action="save_data.php" method="POST">
           Edit Pizza Type: 
-          <input type="text" name="name" value="<?php $row[1] ?>"><br>
-          <input type="hidden" name="id" value="<?php echo $row[0] ?>">
-          <input type="submit" name="Enter">
+          <input type="text" name="name" value="<?php echo $name; ?>"><br>
+          <input type="number" name="price" value="<?php echo $price; ?>">
+          <input type="text" name="topping_one" value="<?php echo $toppingOne; ?>"><br>
+          <input type="text" name="topping_two" value="<?php echo $toppingTwo; ?>"><br>
+          <input type="text" name="topping_three" value="<?php echo $toppingThree; ?>"><br>
+          <input type="hidden" name="id" value="<?php echo $id; ?>">
+          <input type="submit" name=" Update">
         </form>
       </div>
     </div>

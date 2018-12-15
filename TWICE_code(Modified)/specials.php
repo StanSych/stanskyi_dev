@@ -34,6 +34,7 @@
     <div class="main row">
       <div class="medium-12 columns">
         <h1 id="main_h">Menu Specials</h1>
+        <a href="add.php">Add</a>
         <div class="row">
           <?php
           include_once('connect.php');
@@ -41,7 +42,7 @@
           if (isset($_POST['name'])) {
           	$name = $_POST['name'];
 
-          	if (mysql_query("INSERT INTO PIZZA VALUES('','$name')")) {
+          	if (mysqli_query("INSERT INTO Twicedeal.PIZZA VALUES('','$name')")) {
           		echo "Successful Integration";
           	} else{
           		echo "Failed Integration";
@@ -51,25 +52,34 @@
           global $mysqli;
           $result = $mysqli->query("
           	SELECT 
+            PizzaID,
           	PizzaName, 
           	PizzaToppingOne, 
           	PizzaToppingTwo, 
           	PizzaToppingThree,
           	PizzaPrice 
-          	FROM PIZZA
+          	FROM Twicedeal.PIZZA
           ");
 
-          $output = "";
+          // echo " 
+          //   <div class='hidden' class='row'>
+          //     <form action="." method='POST'>
+          //       Name: <input type='text' name='name'/><br />
+          //       <input type='submit' value=' Enter '/>
+          //     </form>
+          //   </div>
+          // ";
 
-          // 'edit.php?edit='$row[PizzaName]'
+          $output = "";
           
           while($row = mysqli_fetch_array($result)){
             $output .= '
             	<div class="medium-6 callout">
             		<h4 class="subheader">'.$row['PizzaName'].' 
             			<a href="
-            				edit.php?edit='.$row['PizzaName'].'
+            				edit.php?edit='.$row['PizzaID'].'
             			">Edit</a>
+                  <a href="delete.php?id='.$row['PizzaID'].'">Delete</a>
             		</h4>
             		<p>'.$row['PizzaToppingOne'].'</p>
             		<p>'.$row['PizzaToppingTwo'].'</p>
@@ -83,7 +93,7 @@
 
 
           // close database connection
-		  $mysqli->close();
+		      //$mysqli->close();
 
           ?>
         </div>
